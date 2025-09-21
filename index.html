@@ -65,7 +65,7 @@
 
         // Também dá para usar "TripleDES" ao invés de "DES"
         const bytes = CryptoJS.DES.decrypt(textoCifrado, chave);
-        const texto = bytes.toString(CryptoJS.enc.Utf8); // Converte os bytes criptografados para string
+        const texto = bytes.toString(CryptoJS.enc.Utf8); // Digo para a função toString() que o texto armazenado em bytes deve ser convertido para UTF-8
 
         document.getElementById("decifrado").innerText = texto || "Erro: chave incorreta."; 
         // Se a chave estiver incorreta, retorna uma string vazia

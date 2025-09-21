@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DES em JavaScript</title>
+  <!-- Importando a biblioteca CryptoJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+    }
+    .resultado {
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h2>Criptografia DES</h2>
+  
+  <label>Mensagem:</label><br>
+  <input type="text" id="mensagem" placeholder="Digite uma mensagem"><br>
+  
+  <label>Chave (8 caracteres):</label><br>
+  <input type="text" id="chave" value="12345678" maxlength="8"><br>
+  
+  <button onclick="criptografar()">Criptografar</button>
+  <button onclick="descriptografar()">Descriptografar</button>
+  
+  <div class="resultado">
+    <p><b>Mensagem original:</b> <span id="original"></span></p>
+    <p><b>Texto cifrado:</b> <span id="cifrado"></span></p>
+    <p><b>Texto decifrado:</b> <span id="decifrado"></span></p>
+  </div>
+
+  <script>
+    let textoCifrado = "";
+
+    function criptografar() {
+      const mensagem = document.getElementById("mensagem").value;
+      const chave = document.getElementById("chave").value;
+
+      if (chave.length !== 8) {
+        alert("A chave deve ter exatamente 8 caracteres!");
+        return;
+      }
+
+      // O texto cifrado gerado pelo CryptoJS  começa com "U2FsdGVkX1", porque ele insere a palavra "Salted__" antes do resultado real para aumentar a segurança.
+      textoCifrado = CryptoJS.DES.encrypt(mensagem, chave).toString();
+
+      document.getElementById("original").innerText = mensagem;
+      document.getElementById("cifrado").innerText = textoCifrado;
+      document.getElementById("decifrado").innerText = "";
+    }
+
+    function descriptografar() {
+        const chave = document.getElementById("chave").value;
+
+        // Também dá para usar "TripleDES" ao invés de "DES"
+        const bytes = CryptoJS.DES.decrypt(textoCifrado, chave);
+        const texto = bytes.toString(CryptoJS.enc.Utf8); // Converte os bytes criptografados para string
+
+        document.getElementById("decifrado").innerText = texto || "Erro: chave incorreta."; 
+        // Se a chave estiver incorreta, retorna uma string vazia
+
+    }
+  </script>
+</body>
+</html>
